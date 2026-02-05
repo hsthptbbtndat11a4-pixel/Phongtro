@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Phòng Trọ - PhongTro.VN</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .post-room-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .post-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            border-radius: 10px;
+        }
+        
+        .post-header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .post-header p {
+            opacity: 0.9;
+            font-size: 18px;
+        }
+        
+        .post-form {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .form-section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .form-section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            font-size: 22px;
+        }
+        
+        .section-title i {
+            color: #3498db;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .price-input {
+            position: relative;
+        }
+        
+        .price-input input {
+            padding-left: 40px;
+        }
+        
+        .price-input::before {
+            content: "đ";
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-weight: bold;
+        }
+        
+        .area-input {
+            position: relative;
+        }
+        
+        .area-input input {
+            padding-right: 40px;
+        }
+        
+        .area-input::after {
+            content: "m²";
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .checkbox-item:hover {
+            background: #e9ecef;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+        }
+        
+        .image-upload {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        
+        .image-upload:hover {
+            border-color: #3498db;
+        }
+        
+        .image-upload i {
+            font-size: 48px;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+        
+        .image-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .preview-item {
+            position: relative;
+            height: 150px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255, 107, 107, 0.9);
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .submit-section {
+            text-align: center;
+            padding-top: 30px;
+        }
+        
+        .btn-post {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .btn-post:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+        }
+        
+        .form-note {
+            margin-top: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .form-note i {
+            color: #3498db;
+            margin-right: 5px;
+        }
+        
+        .login-required {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .login-required i {
+            font-size: 72px;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+        }
+        
+        .login-required h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <i class="fas fa-home"></i>
+                    <span>PhongTro.VN</span>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html"><i class="fas fa-home"></i> Trang Chủ</a>
+                    <a href="rooms.html"><i class="fas fa-search"></i> Tìm Phòng</a>
+                    <a href="post-room.html" class="active"><i class="fas fa-plus-circle"></i> Đăng Phòng</a>
+                    <a href="login.html" id="loginBtn"><i class="fas fa-user"></i> Đăng Nhập</a>
+                    <a href="register.html" id="registerBtn"><i class="fas fa-user-plus"></i> Đăng Ký</a>
+                </div>
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <span id="userName"></span>
+                    <button onclick="logout()" class="btn-logout">Đăng Xuất</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="post-room-container" id="mainContent">
+        <!-- Nội dung sẽ được load động dựa trên trạng thái đăng nhập -->
+    </main>
+
+    <script>
+        // Biến toàn cục
+        let currentUser = null;
+        let uploadedImages = [];
+        
+        // Kiểm tra đăng nhập
+        function checkLogin() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            currentUser = user;
+            
+            if (user) {
+                // Đã đăng nhập
+                document.getElementById('loginBtn').style.display = 'none';
+                document.getElementById('registerBtn').style.display = 'none';
+                document.getElementById('userInfo').style.display = 'flex';
+                document.getElementById('userName').textContent = user.username;
+                
+                // Kiểm tra role
+                if (user.role === 'chutro' || user.role === 'admin') {
+                    loadPostForm();
+                } else {
+                    loadNotAuthorized();
+                }
+            } else {
+                // Chưa đăng nhập
+                loadLoginRequired();
+            }
+        }
+        
+        // Load form đăng phòng
+        function loadPostForm() {
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+                <div class="post-header">
+                    <h1><i class="fas fa-home"></i> Đăng Phòng Trọ Mới</h1>
+                    <p>Điền thông tin chi tiết để đăng phòng của bạn lên hệ thống</p>
+                </div>
+                
+                <form class="post-form" id="roomForm">
+                    <!-- Thông tin cơ bản -->
+                    <div class="form-section">
+                        <h2 class="section-title">
+                            <i class="fas fa-info-circle"></i> Thông Tin Cơ Bản
+                        </h2>
+                        
+                        <div class="form-group">
+                            <label for="title"><i class="fas fa-heading"></i> Tiêu đề phòng *</label>
+                            <input type="text" id="title" name="title" required 
+                                   placeholder="Ví dụ: Phòng trọ đẹp Quận 1, 20m², có toilet riêng">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description"><i class="fas fa-align-left"></i> Mô tả chi tiết *</label>
+                            <textarea id="description" name="description" rows="5" required 
+                                      placeholder="Mô tả chi tiết về phòng trọ: vị trí, tiện nghi, ưu điểm..."></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group price-input">
+                                <label for="price"><i class="fas fa-money-bill-wave"></i> Giá thuê/tháng *</label>
+                                <input type="number" id="price" name="price" required 
+                                       placeholder="3.500.000" min="100000" step="100000">
+                            </div>
+                            
+                            <div class="form-group area-input">
+                                <label for="area"><i class="fas fa-ruler-combined"></i> Diện tích (m²)</label>
+                                <input type="number" id="area" name="area" 
+                                       placeholder="20" min="5" step="0.5">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="max_people"><i class="fas fa-user-friends"></i> Số người tối đa</label>
+                                <select id="max_people" name="max_people">
+                                    <option value="1">1 người</option>
+                                    <option value="2" selected>2 người</option>
+                                    <option value="3">3 người</option>
+                                    <option value="4">4 người</option>
+                                    <option value="5">5+ người</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="status"><i class="fas fa-bullhorn"></i> Tình trạng phòng</label>
+                                <select id="status" name="status">
+                                    <option value="available">Còn trống</option>
+                                    <option value="rented">Đã cho thuê</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Địa chỉ -->
+                    <div class="form-section">
+                        <h2 class="section-title">
+                            <i class="fas fa-map-marker-alt"></i> Địa Chỉ
+                        </h2>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city"><i class="fas fa-city"></i> Thành phố *</label>
+                                <select id="city" name="city" required>
+                                    <option value="">Chọn thành phố</option>
+                                    <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+                                    <option value="Hà Nội">Hà Nội</option>
+                                    <option value="Đà Nẵng">Đà Nẵng</option>
+                                    <option value="Cần Thơ">Cần Thơ</option>
+                                    <option value="Hải Phòng">Hải Phòng</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="district"><i class="fas fa-map"></i> Quận/Huyện *</label>
+                                <select id="district" name="district" required>
+                                    <option value="">Chọn quận/huyện</option>
+                                    <option value="Quận 1">Quận 1</option>
+                                    <option value="Quận 3">Quận 3</option>
+                                    <option value="Quận 5">Quận 5</option>
+                                    <option value="Quận 7">Quận 7</option>
+                                    <option value="Quận 10">Quận 10</option>
+                                    <option value="Quận Tân Bình">Quận Tân Bình</option>
+                                    <option value="Quận Gò Vấp">Quận Gò Vấp</option>
+                                    <option value="Quận Bình Thạnh">Quận Bình Thạnh</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address"><i class="fas fa-location-dot"></i> Địa chỉ chi tiết *</label>
+                            <input type="text" id="address" name="address" required 
+                                   placeholder="Số nhà, tên đường, phường/xã">
+                        </div>
+                    </div>
+                    
+                    <!-- Tiện nghi -->
+                    <div class="form-section">
+                        <h2 class="section-title">
+                            <i class="fas fa-concierge-bell"></i> Tiện Nghi
+                        </h2>
+                        
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="amenities" value="wifi">
+                                <span>WiFi</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="amenities" value="aircon">
+                                <span>Máy lạnh</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="amenities" value="fridge">
+                                <span>Tủ lạnh</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="amenities" value="washing">
+                                <span>Máy giặt</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="amenities" value="parking">
+                                <span>Chỗ để xe</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="amenities" value="security">
+                                <span>An ninh 24/7</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="amenities" value="elevator">
+                                <span>Thang máy</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="amenities" value="camera">
+                                <span>Camera an ninh</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Hình ảnh -->
+                    <div class="form-section">
+                        <h2 class="section-title">
+                            <i class="fas fa-images"></i> Hình Ảnh
+                        </h2>
+                        
+                        <div class="image-upload" onclick="document.getElementById('imageInput').click()">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <h3>Kéo thả hình ảnh hoặc click để chọn</h3>
+                            <p>Chọn hình ảnh phòng trọ (tối đa 10 ảnh, định dạng JPG, PNG)</p>
+                            <input type="file" id="imageInput" accept="image/*" multiple style="display: none;" 
+                                   onchange="handleImageUpload(event)">
+                        </div>
+                        
+                        <div class="image-preview" id="imagePreview">
+                            <!-- Preview images sẽ được thêm vào đây -->
+                        </div>
+                    </div>
+                    
+                    <!-- Thông tin liên hệ -->
+                    <div class="form-section">
+                        <h2 class="section-title">
+                            <i class="fas fa-phone"></i> Thông Tin Liên Hệ
+                        </h2>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contact_name"><i class="fas fa-user"></i> Người liên hệ</label>
+                                <input type="text" id="contact_name" name="contact_name" 
+                                       value="${currentUser.fullname || ''}" 
+                                       placeholder="Tên người liên hệ">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact_phone"><i class="fas fa-phone"></i> Số điện thoại</label>
+                                <input type="tel" id="contact_phone" name="contact_phone" 
+                                       value="${currentUser.phone || ''}" 
+                                       placeholder="Số điện thoại liên hệ">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit -->
+                    <div class="submit-section">
+                        <button type="submit" class="btn-post" id="submitBtn">
+                            <i class="fas fa-paper-plane"></i> Đăng Phòng Ngay
+                        </button>
+                        <p class="form-note">
+                            <i class="fas fa-info-circle"></i>
+                            Phòng của bạn sẽ được kiểm duyệt trước khi hiển thị công khai (thời gian từ 1-24 giờ)
+                        </p>
+                    </div>
+                </form>
+                
+                <div id="message" style="margin-top: 20px; display: none;"></div>
+            `;
+            
+            // Thêm event listener cho form
+            setTimeout(() => {
+                document.getElementById('roomForm').addEventListener('submit', handleSubmit);
+            }, 100);
+        }
+        
+        // Load trang yêu cầu đăng nhập
+        function loadLoginRequired() {
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+                <div class="login-required">
+                    <i class="fas fa-lock"></i>
+                    <h2>Vui lòng đăng nhập để đăng phòng</h2>
+                    <p>Chức năng này yêu cầu bạn phải đăng nhập với tài khoản chủ trọ</p>
+                    <div style="margin-top: 30px;">
+                        <a href="login.html" class="btn-primary" style="margin-right: 15px;">
+                            <i class="fas fa-sign-in-alt"></i> Đăng Nhập
+                        </a>
+                        <a href="register.html" class="btn-secondary">
+                            <i class="fas fa-user-plus"></i> Đăng Ký Chủ Trọ
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Load trang không có quyền
+        function loadNotAuthorized() {
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+                <div class="login-required">
+                    <i class="fas fa-user-slash"></i>
+                    <h2>Bạn không có quyền đăng phòng</h2>
+                    <p>Tài khoản của bạn hiện là <strong>${currentUser.role}</strong>. Chức năng đăng phòng chỉ dành cho tài khoản Chủ Trọ.</p>
+                    <p>Vui lòng đăng ký tài khoản chủ trọ hoặc liên hệ quản trị viên.</p>
+                    <div style="margin-top: 30px;">
+                        <a href="index.html" class="btn-primary" style="margin-right: 15px;">
+                            <i class="fas fa-home"></i> Về Trang Chủ
+                        </a>
+                        <a href="register.html" class="btn-secondary">
+                            <i class="fas fa-user-plus"></i> Đăng Ký Chủ Trọ
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Xử lý upload hình ảnh
+        function handleImageUpload(event) {
+            const files = event.target.files;
+            const preview = document.getElementById('imagePreview');
+            
+            for (let i = 0; i < Math.min(files.length, 10 - uploadedImages.length); i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    // Tạo preview item
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'preview-item';
+                    previewItem.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview">
+                        <div class="remove-image" onclick="removeImage(${uploadedImages.length})">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    `;
+                    
+                    preview.appendChild(previewItem);
+                    
+                    // Lưu vào mảng (trong thực tế sẽ upload lên server)
+                    uploadedImages.push({
+                        id: uploadedImages.length,
+                        name: file.name,
+                        url: e.target.result,
+                        file: file
+                    });
+                };
+                
+                reader.readAsDataURL(file);
+            }
+            
+            // Reset input
+            event.target.value = '';
+        }
+        
+        // Xóa hình ảnh
+        function removeImage(index) {
+            uploadedImages.splice(index, 1);
+            updateImagePreview();
+        }
+        
+        // Cập nhật preview
+        function updateImagePreview() {
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = '';
+            
+            uploadedImages.forEach((image, index) => {
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item';
+                previewItem.innerHTML = `
+                    <img src="${image.url}" alt="Preview">
+                    <div class="remove-image" onclick="removeImage(${index})">
+                        <i class="fas fa-times"></i>
+                    </div>
+                `;
+                preview.appendChild(previewItem);
+            });
+        }
+        
+        // ==================== XỬ LÝ UPLOAD ẢNH THẬT ====================
+
+// Biến lưu trữ ảnh đã upload
+let uploadedImages = [];
+
+// Xử lý upload ảnh
+async function handleImageUpload(event) {
+    const files = event.target.files;
+    const preview = document.getElementById('imagePreview');
+    
+    // Chỉ upload tối đa 10 ảnh
+    const remainingSlots = 10 - uploadedImages.length;
+    const filesToUpload = Array.from(files).slice(0, remainingSlots);
+    
+    if (filesToUpload.length === 0) {
+        alert('Đã đạt giới hạn 10 ảnh');
+        return;
+    }
+    
+    // Tạo FormData
+    const formData = new FormData();
+    filesToUpload.forEach(file => {
+        formData.append('images', file);
+    });
+    
+    // Hiển thị loading
+    const submitBtn = document.getElementById('submitBtn');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang upload ảnh...';
+    
+    try {
+        // Gửi request upload
+        const response = await fetch('http://localhost:3000/api/upload', {
+            method: 'POST',
+            body: formData
+            // Không set Content-Type header, browser sẽ tự set với boundary
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Thêm ảnh vào danh sách
+            result.images.forEach(imageUrl => {
+                uploadedImages.push({
+                    url: imageUrl,
+                    filename: imageUrl.split('/').pop()
+                });
+            });
+            
+            // Cập nhật preview
+            updateImagePreview();
+            
+            showMessage(`✅ Đã upload ${result.images.length} ảnh thành công!`, 'success');
+        } else {
+            showMessage('❌ ' + result.error, 'error');
+        }
+    } catch (error) {
+        console.error('Lỗi upload ảnh:', error);
+        showMessage('❌ Lỗi upload ảnh. Vui lòng thử lại.', 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+    }
+    
+    // Reset input
+    event.target.value = '';
+}
+
+// Xóa ảnh
+async function removeImage(index) {
+    const image = uploadedImages[index];
+    
+    if (!confirm('Bạn có chắc chắn muốn xóa ảnh này?')) return;
+    
+    try {
+        // Xóa ảnh trên server
+        const response = await fetch(`http://localhost:3000/api/upload/${image.filename}`, {
+            method: 'DELETE'
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Xóa khỏi mảng
+            uploadedImages.splice(index, 1);
+            updateImagePreview();
+            showMessage('✅ Đã xóa ảnh', 'success');
+        } else {
+            showMessage('❌ ' + result.error, 'error');
+        }
+    } catch (error) {
+        console.error('Lỗi xóa ảnh:', error);
+        // Vẫn xóa khỏi preview nếu lỗi
+        uploadedImages.splice(index, 1);
+        updateImagePreview();
+    }
+}
+
+// Cập nhật preview
+function updateImagePreview() {
+    const preview = document.getElementById('imagePreview');
+    preview.innerHTML = '';
+    
+    if (uploadedImages.length === 0) {
+        preview.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #666;">
+                <i class="fas fa-images" style="font-size: 36px; margin-bottom: 10px;"></i>
+                <p>Chưa có ảnh nào được upload</p>
+            </div>
+        `;
+        return;
+    }
+    
+    uploadedImages.forEach((image, index) => {
+        const previewItem = document.createElement('div');
+        previewItem.className = 'preview-item';
+        previewItem.innerHTML = `
+            <img src="http://localhost:3000${image.url}" alt="Preview" 
+                 onerror="this.src='https://via.placeholder.com/150/4dabf7/fff?text=Ảnh+lỗi'">
+            <div class="remove-image" onclick="removeImage(${index})">
+                <i class="fas fa-times"></i>
+            </div>
+        `;
+        preview.appendChild(previewItem);
+    });
+}
+
+// ==================== XỬ LÝ SUBMIT FORM CÓ ẢNH ====================
+
+async function handleSubmit(e) {
+    e.preventDefault();
+    
+    if (!currentUser) {
+        showMessage('Vui lòng đăng nhập trước!', 'error');
+        return;
+    }
+    
+    // Validate form
+    const title = document.getElementById('title').value;
+    const price = document.getElementById('price').value;
+    const address = document.getElementById('address').value;
+    const city = document.getElementById('city').value;
+    const district = document.getElementById('district').value;
+    
+    if (!title || !price || !address || !city || !district) {
+        showMessage('Vui lòng điền đầy đủ các thông tin bắt buộc!', 'error');
+        return;
+    }
+    
+    // Lấy dữ liệu form
+    const formData = {
+        owner_id: currentUser.id,
+        title: title,
+        description: document.getElementById('description').value || '',
+        price: parseInt(price),
+        address: address,
+        city: city,
+        district: district,
+        area: parseFloat(document.getElementById('area').value) || 0,
+        max_people: parseInt(document.getElementById('max_people').value) || 1,
+        image_urls: JSON.stringify(uploadedImages.map(img => img.url)) // Chuyển thành JSON string
+    };
+    
+    console.log('📝 Dữ liệu gửi lên:', formData);
+    
+    // Vô hiệu hóa nút submit
+    const submitBtn = document.getElementById('submitBtn');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
+    
+    try {
+        const response = await fetch('http://localhost:3000/api/rooms', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            showMessage(
+                `🎉 Đăng phòng thành công! Mã phòng: #${result.roomId}<br>
+                 Phòng của bạn đang chờ duyệt và sẽ hiển thị sau khi được phê duyệt.`,
+                'success'
+            );
+            
+            // Reset form
+            document.getElementById('roomForm').reset();
+            uploadedImages = [];
+            updateImagePreview();
+            
+            // Tự động chuyển hướng sau 3 giây
+            setTimeout(() => {
+                window.location.href = `room-detail.html?id=${result.roomId}`;
+            }, 3000);
+        } else {
+            showMessage('❌ ' + (result.error || 'Đăng phòng thất bại!'), 'error');
+            console.error('Chi tiết lỗi:', result);
+        }
+    } catch (error) {
+        showMessage('❌ Lỗi kết nối server. Vui lòng thử lại sau.', 'error');
+        console.error('Error:', error);
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+    }
+}
+
+        // Xử lý submit form
+        async function handleSubmit(e) {
+            e.preventDefault();
+            
+            if (!currentUser) {
+                showMessage('Vui lòng đăng nhập trước!', 'error');
+                return;
+            }
+            
+            // Lấy dữ liệu form
+            const formData = {
+                owner_id: currentUser.id,
+                title: document.getElementById('title').value,
+                description: document.getElementById('description').value,
+                price: parseInt(document.getElementById('price').value),
+                address: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                district: document.getElementById('district').value,
+                area: parseFloat(document.getElementById('area').value) || 0,
+                max_people: parseInt(document.getElementById('max_people').value)
+            };
+            
+            // Validate
+            if (!formData.title || !formData.description || !formData.price || 
+                !formData.address || !formData.city || !formData.district) {
+                showMessage('Vui lòng điền đầy đủ các thông tin bắt buộc!', 'error');
+                return;
+            }
+            
+            if (formData.price < 100000) {
+                showMessage('Giá thuê phải từ 100,000 VNĐ trở lên!', 'error');
+                return;
+            }
+            
+            // Vô hiệu hóa nút submit
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/rooms', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage(
+                        `🎉 Đăng phòng thành công! Mã phòng: #${result.roomId}<br>
+                         Phòng của bạn đang chờ duyệt và sẽ hiển thị sau khi được phê duyệt.`,
+                        'success'
+                    );
+                    
+                    // Reset form
+                    document.getElementById('roomForm').reset();
+                    uploadedImages = [];
+                    updateImagePreview();
+                    
+                    // Tự động chuyển hướng sau 3 giây
+                    setTimeout(() => {
+                        window.location.href = `room-detail.html?id=${result.roomId}`;
+                    }, 3000);
+                } else {
+                    showMessage('❌ ' + (result.error || 'Đăng phòng thất bại!'), 'error');
+                }
+            } catch (error) {
+                showMessage('❌ Lỗi kết nối server. Vui lòng thử lại sau.', 'error');
+                console.error('Error:', error);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        }
+        
+        // Hiển thị thông báo
+        function showMessage(text, type) {
+            let messageDiv = document.getElementById('message');
+            if (!messageDiv) {
+                messageDiv = document.createElement('div');
+                messageDiv.id = 'message';
+                document.querySelector('.post-form').appendChild(messageDiv);
+            }
+            
+            messageDiv.innerHTML = text;
+            messageDiv.style.display = 'block';
+            messageDiv.style.padding = '15px';
+            messageDiv.style.borderRadius = '5px';
+            messageDiv.style.marginTop = '20px';
+            
+            if (type === 'success') {
+                messageDiv.style.backgroundColor = '#d4edda';
+                messageDiv.style.color = '#155724';
+                messageDiv.style.border = '1px solid #c3e6cb';
+            } else {
+                messageDiv.style.backgroundColor = '#f8d7da';
+                messageDiv.style.color = '#721c24';
+                messageDiv.style.border = '1px solid #f5c6cb';
+            }
+        }
+        
+        // Đăng xuất
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+        
+        // Chạy khi trang load
+        document.addEventListener('DOMContentLoaded', checkLogin);
+    </script>
+</body>
+</html>

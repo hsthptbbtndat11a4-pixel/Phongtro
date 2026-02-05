@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập - PhongTro.VN</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="form-container">
+        <h1 class="form-title"><i class="fas fa-sign-in-alt"></i> Đăng Nhập</h1>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username"><i class="fas fa-user"></i> Tên đăng nhập</label>
+                <input type="text" id="username" name="username" required placeholder="Nhập username">
+            </div>
+            
+            <div class="form-group">
+                <label for="password"><i class="fas fa-lock"></i> Mật khẩu</label>
+                <input type="password" id="password" name="password" required placeholder="Nhập mật khẩu">
+            </div>
+            
+            <div class="form-group">
+                <label for="role"><i class="fas fa-user-tag"></i> Đăng nhập với tư cách</label>
+                <select id="role" name="role">
+                    <option value="user">Người thuê</option>
+                    <option value="chutro">Chủ trọ</option>
+                    <option value="admin">Quản trị viên</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn-submit">Đăng Nhập</button>
+            
+            <div class="form-link">
+                <p>Chưa có tài khoản? <a href="register.html">Đăng ký ngay</a></p>
+                <p><a href="index.html">← Quay lại trang chủ</a></p>
+            </div>
+        </form>
+        
+        <div id="message" style="margin-top: 20px; display: none;"></div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+            
+            const messageDiv = document.getElementById('message');
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password, role })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    messageDiv.style.color = 'green';
+                    messageDiv.innerHTML = '✅ Đăng nhập thành công! Đang chuyển hướng...';
+                    messageDiv.style.display = 'block';
+                    
+                    // Lưu thông tin user vào localStorage
+                    localStorage.setItem('user', JSON.stringify(result.user));
+                    
+                    // Chuyển hướng dựa trên role
+                    setTimeout(() => {
+                        if (result.user.role === 'admin') {
+                            window.location.href = 'admin.html';
+                        } else if (result.user.role === 'chutro') {
+                            window.location.href = 'post-room.html';
+                        } else {
+                            window.location.href = 'index.html';
+                        }
+                    }, 1500);
+                } else {
+                    messageDiv.style.color = 'red';
+                    messageDiv.innerHTML = '❌ ' + result.message;
+                    messageDiv.style.display = 'block';
+                }
+            } catch (error) {
+                messageDiv.style.color = 'red';
+                messageDiv.innerHTML = '❌ Lỗi kết nối server';
+                messageDiv.style.display = 'block';
+                console.error('Error:', error);
+            }
+        });
+        
+        // Kiểm tra nếu đã đăng nhập thì chuyển hướng
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user) {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Phòng Trọ - PhongTro.VN</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .room-detail-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .room-header {
+            margin-bottom: 30px;
+        }
+        
+        .room-title {
+            font-size: 32px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .room-price {
+            font-size: 28px;
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        
+        .room-gallery {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 10px;
+            height: 400px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .main-image {
+            grid-row: span 2;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        
+        .main-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        .thumb-image {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .thumb-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        
+        .thumb-image:hover img {
+            transform: scale(1.1);
+        }
+        
+        .room-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+        
+        .room-info {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .info-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .info-section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 20px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .info-item i {
+            color: #3498db;
+            width: 20px;
+        }
+        
+        .owner-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .owner-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #3498db;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 32px;
+        }
+        
+        .owner-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .owner-role {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+        
+        .contact-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .contact-btn:hover {
+            background: #2980b9;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn-favorite, .btn-share {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-favorite:hover, .btn-share:hover {
+            background: #f8f9fa;
+        }
+        
+        .reviews-section {
+            margin-top: 40px;
+        }
+        
+        .review-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .review-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .review-rating {
+            color: #f39c12;
+        }
+        
+        .no-images {
+            grid-column: 1 / -1;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border-radius: 10px;
+            color: #7f8c8d;
+            flex-direction: column;
+        }
+        
+        .no-images i {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .room-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .room-gallery {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+            
+            .main-image {
+                grid-row: 1;
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <i class="fas fa-home"></i>
+                    <span>PhongTro.VN</span>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html"><i class="fas fa-home"></i> Trang Chủ</a>
+                    <a href="rooms.html"><i class="fas fa-search"></i> Tìm Phòng</a>
+                    <a href="post-room.html"><i class="fas fa-plus-circle"></i> Đăng Phòng</a>
+                    <a href="login.html" id="loginBtn"><i class="fas fa-user"></i> Đăng Nhập</a>
+                    <a href="register.html" id="registerBtn"><i class="fas fa-user-plus"></i> Đăng Ký</a>
+                </div>
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <span id="userName"></span>
+                    <button onclick="logout()" class="btn-logout">Đăng Xuất</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="room-detail-container">
+        <div id="roomContent">
+            <!-- Nội dung sẽ được load bằng JS -->
+            <div class="loading" id="loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Đang tải thông tin phòng...</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Lấy ID phòng từ URL
+        function getRoomIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
+        
+        // Load thông tin phòng
+        async function loadRoomDetails() {
+            const roomId = getRoomIdFromUrl();
+            
+            if (!roomId) {
+                document.getElementById('roomContent').innerHTML = `
+                    <div style="text-align: center; padding: 50px;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 48px; color: #f39c12; margin-bottom: 20px;"></i>
+                        <h2>Không tìm thấy phòng</h2>
+                        <p>Vui lòng quay lại trang danh sách phòng</p>
+                        <a href="rooms.html" class="btn-primary" style="margin-top: 20px;">Quay lại danh sách phòng</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            try {
+                const response = await fetch(`http://localhost:3000/api/rooms/${roomId}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayRoomDetails(result.data);
+                } else {
+                    document.getElementById('roomContent').innerHTML = `
+                        <div style="text-align: center; padding: 50px;">
+                            <i class="fas fa-bed" style="font-size: 48px; color: #7f8c8d; margin-bottom: 20px;"></i>
+                            <h2>${result.message || 'Không tìm thấy phòng'}</h2>
+                            <a href="rooms.html" class="btn-primary" style="margin-top: 20px;">Quay lại danh sách phòng</a>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Lỗi khi load chi tiết phòng:', error);
+                document.getElementById('roomContent').innerHTML = `
+                    <div style="text-align: center; padding: 50px;">
+                        <i class="fas fa-exclamation-circle" style="font-size: 48px; color: #e74c3c; margin-bottom: 20px;"></i>
+                        <h2>Lỗi kết nối server</h2>
+                        <p>Không thể tải thông tin phòng. Vui lòng thử lại sau.</p>
+                    </div>
+                `;
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+        
+        // Hiển thị chi tiết phòng
+        function displayRoomDetails(room) {
+            // Format currency
+            const formatPrice = (price) => {
+                return new Intl.NumberFormat('vi-VN').format(price) + ' đ';
+            };
+            
+            // Tạo gallery HTML
+            let galleryHTML = '';
+            if (room.images && room.images.length > 0) {
+                room.images.forEach((imageUrl, index) => {
+                    const fullImageUrl = imageUrl.startsWith('http') ? imageUrl : `http://localhost:3000${imageUrl}`;
+                    
+                    if (index === 0) {
+                        galleryHTML += `
+                            <div class="main-image">
+                                <img src="${fullImageUrl}" alt="Ảnh chính" 
+                                     onerror="this.src='https://via.placeholder.com/800x400/4dabf7/fff?text=Không+hiển+thị+được+ảnh'">
+                            </div>
+                        `;
+                    } else if (index < 5) { // Chỉ hiển thị tối đa 5 ảnh
+                        galleryHTML += `
+                            <div class="thumb-image" onclick="changeMainImage('${fullImageUrl}')">
+                                <img src="${fullImageUrl}" alt="Ảnh ${index + 1}"
+                                     onerror="this.src='https://via.placeholder.com/400x200/4dabf7/fff?text=Ảnh+lỗi'">
+                            </div>
+                        `;
+                    }
+                });
+            } else {
+                galleryHTML = `
+                    <div class="no-images">
+                        <i class="fas fa-images"></i>
+                        <p>Chưa có hình ảnh cho phòng này</p>
+                    </div>
+                `;
+            }
+            
+            // Tạo HTML cho phòng
+            document.getElementById('roomContent').innerHTML = `
+                <div class="room-header">
+                    <h1 class="room-title">${room.title}</h1>
+                    <div class="room-price">${formatPrice(room.price)} / tháng</div>
+                </div>
+                
+                <div class="room-gallery" id="roomGallery">
+                    ${galleryHTML}
+                </div>
+                
+                <div class="room-content">
+                    <div class="room-info">
+                        <div class="info-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-info-circle"></i>
+                                Thông Tin Cơ Bản
+                            </h3>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <i class="fas fa-ruler-combined"></i>
+                                    <span>Diện tích: ${room.area ? room.area + ' m²' : 'Chưa cập nhật'}</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-user-friends"></i>
+                                    <span>Số người: ${room.max_people || 1} người</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>${room.district || ''}, ${room.city || ''}</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-home"></i>
+                                    <span>Trạng thái: ${room.status === 'approved' ? 'Còn trống' : 'Đã cho thuê'}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="info-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Địa Chỉ
+                            </h3>
+                            <p><i class="fas fa-location-dot"></i> ${room.address}</p>
+                            <p><i class="fas fa-city"></i> ${room.district || ''}, ${room.city || ''}</p>
+                        </div>
+                        
+                        <div class="info-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-align-left"></i>
+                                Mô Tả
+                            </h3>
+                            <p>${room.description || 'Chưa có mô tả chi tiết'}</p>
+                        </div>
+                        
+                        ${room.reviews && room.reviews.length > 0 ? `
+                        <div class="info-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-star"></i>
+                                Đánh Giá (${room.reviews.length})
+                            </h3>
+                            ${room.reviews.slice(0, 3).map(review => `
+                                <div class="review-card">
+                                    <div class="review-header">
+                                        <div class="review-user">
+                                            <i class="fas fa-user-circle"></i>
+                                            <strong>${review.user_name || 'Ẩn danh'}</strong>
+                                        </div>
+                                        <div class="review-rating">
+                                            ${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}
+                                        </div>
+                                    </div>
+                                    <p>${review.comment || 'Không có bình luận'}</p>
+                                    <small style="color: #7f8c8d;">${new Date(review.created_at).toLocaleDateString('vi-VN')}</small>
+                                </div>
+                            `).join('')}
+                        </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="room-sidebar">
+                        <div class="owner-card">
+                            <div class="owner-avatar">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div class="owner-name">${room.owner_name || 'Chủ trọ'}</div>
+                            <div class="owner-role">Chủ phòng trọ</div>
+                            ${room.owner_phone ? `
+                                <p><i class="fas fa-phone"></i> ${room.owner_phone}</p>
+                            ` : ''}
+                            ${room.owner_email ? `
+                                <p><i class="fas fa-envelope"></i> ${room.owner_email}</p>
+                            ` : ''}
+                            
+                            <button class="contact-btn" onclick="contactOwner('${room.owner_phone || ''}', '${room.owner_email || ''}')">
+                                <i class="fas fa-phone-alt"></i> Liên Hệ Ngay
+                            </button>
+                            
+                            <button class="contact-btn" onclick="bookViewing(${room.id})" style="background: #2ecc71;">
+                                <i class="fas fa-calendar-alt"></i> Đặt Lịch Xem Phòng
+                            </button>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button class="btn-favorite" onclick="toggleFavorite(${room.id})">
+                                <i class="far fa-heart"></i> Yêu thích
+                            </button>
+                            <button class="btn-share" onclick="shareRoom()">
+                                <i class="fas fa-share-alt"></i> Chia sẻ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Kiểm tra đăng nhập
+            checkLogin();
+        }
+        
+        // Đổi ảnh chính
+        function changeMainImage(imageUrl) {
+            const mainImage = document.querySelector('.main-image img');
+            if (mainImage) {
+                mainImage.src = imageUrl;
+            }
+        }
+        
+        // Liên hệ chủ trọ
+        function contactOwner(phone, email) {
+            if (phone) {
+                if (confirm(`Gọi điện cho chủ trọ: ${phone}?`)) {
+                    window.location.href = `tel:${phone}`;
+                }
+            } else if (email) {
+                if (confirm(`Gửi email cho chủ trọ: ${email}?`)) {
+                    window.location.href = `mailto:${email}`;
+                }
+            } else {
+                alert('Chủ trọ chưa cung cấp thông tin liên hệ');
+            }
+        }
+        
+        // Đặt lịch xem phòng
+        function bookViewing(roomId) {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                alert('Vui lòng đăng nhập để đặt lịch xem phòng!');
+                window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.href);
+                return;
+            }
+            
+            // Trong thực tế, mở modal hoặc chuyển trang đặt lịch
+            alert(`Chức năng đặt lịch xem phòng #${roomId} đang được phát triển!`);
+        }
+        
+        // Thêm vào yêu thích
+        function toggleFavorite(roomId) {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                alert('Vui lòng đăng nhập để thêm vào yêu thích!');
+                return;
+            }
+            
+            // Toggle favorite
+            const favoriteBtn = document.querySelector('.btn-favorite i');
+            if (favoriteBtn.classList.contains('far')) {
+                favoriteBtn.classList.remove('far');
+                favoriteBtn.classList.add('fas');
+                favoriteBtn.style.color = '#e74c3c';
+                alert('Đã thêm vào danh sách yêu thích!');
+            } else {
+                favoriteBtn.classList.remove('fas');
+                favoriteBtn.classList.add('far');
+                favoriteBtn.style.color = '';
+                alert('Đã xóa khỏi danh sách yêu thích!');
+            }
+        }
+        
+        // Chia sẻ phòng
+        function shareRoom() {
+            if (navigator.share) {
+                navigator.share({
+                    title: document.title,
+                    text: 'Xem phòng trọ này trên PhongTro.VN',
+                    url: window.location.href
+                });
+            } else {
+                // Copy link
+                navigator.clipboard.writeText(window.location.href);
+                alert('Đã copy link phòng vào clipboard!');
+            }
+        }
+        
+        // Kiểm tra đăng nhập
+        function checkLogin() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user) {
+                document.getElementById('loginBtn').style.display = 'none';
+                document.getElementById('registerBtn').style.display = 'none';
+                document.getElementById('userInfo').style.display = 'flex';
+                document.getElementById('userName').textContent = user.username;
+            }
+        }
+        
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+        
+        // Chạy khi trang load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadRoomDetails();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Phòng Trọ - Trang Chủ</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <i class="fas fa-home"></i>
+                    <span>PhongTro.VN</span>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html" class="active"><i class="fas fa-home"></i> Trang Chủ</a>
+                    <a href="rooms.html"><i class="fas fa-search"></i> Tìm Phòng</a>
+                    <a href="post-room.html"><i class="fas fa-plus-circle"></i> Đăng Phòng</a>
+                    <a href="login.html" id="loginBtn"><i class="fas fa-user"></i> Đăng Nhập</a>
+                    <a href="register.html" id="registerBtn"><i class="fas fa-user-plus"></i> Đăng Ký</a>
+                </div>
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <span id="userName"></span>
+                    <button onclick="logout()" class="btn-logout">Đăng Xuất</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Tìm Phòng Trọ Phù Hợp Với Bạn</h1>
+                <p>Hơn 1000+ phòng trọ, nhà nguyên căn với đầy đủ tiện nghi</p>
+                <a href="rooms.html" class="btn-primary">Tìm Phòng Ngay</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Tại Sao Chọn Chúng Tôi?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Tin Cậy</h3>
+                    <p>Thông tin phòng trọ được xác minh, đảm bảo an toàn</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-search"></i>
+                    <h3>Dễ Tìm Kiếm</h3>
+                    <p>Bộ lọc thông minh giúp tìm phòng nhanh chóng</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-comments"></i>
+                    <h3>Liên Hệ Trực Tiếp</h3>
+                    <p>Chat trực tiếp với chủ trọ, đặt lịch xem phòng online</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-star"></i>
+                    <h3>Đánh Giá Thực</h3>
+                    <p>Đánh giá từ người đã thuê giúp bạn chọn lựa tốt hơn</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Rooms -->
+    <section class="recent-rooms">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Phòng Trọ Mới Nhất</h2>
+                <a href="rooms.html" class="btn-secondary">Xem Tất Cả</a>
+            </div>
+            <div class="rooms-grid" id="roomsList">
+                <!-- Rooms sẽ được load bằng JS -->
+                <div class="loading">Đang tải phòng trọ...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>PhongTro.VN</h3>
+                    <p>Kết nối chủ trọ và người thuê một cách nhanh chóng, tin cậy</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Liên Hệ</h3>
+                    <p><i class="fas fa-phone"></i> 1900 1234</p>
+                    <p><i class="fas fa-envelope"></i> support@phongtro.vn</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Chức Năng</h3>
+                    <a href="rooms.html">Tìm phòng trọ</a>
+                    <a href="post-room.html">Đăng phòng cho thuê</a>
+                    <a href="login.html">Đăng nhập/Đăng ký</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PhongTro.VN. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Kiểm tra đăng nhập
+        function checkLogin() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user) {
+                document.getElementById('loginBtn').style.display = 'none';
+                document.getElementById('registerBtn').style.display = 'none';
+                document.getElementById('userInfo').style.display = 'flex';
+                document.getElementById('userName').textContent = user.username;
+                
+                // Thêm link admin nếu là admin
+                if (user.role === 'admin') {
+                    const navLinks = document.querySelector('.nav-links');
+                    const adminLink = document.createElement('a');
+                    adminLink.href = 'admin.html';
+                    adminLink.innerHTML = '<i class="fas fa-cog"></i> Admin';
+                    adminLink.style.color = '#ff6b6b';
+                    navLinks.insertBefore(adminLink, navLinks.children[3]);
+                }
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+
+        // Load danh sách phòng
+        async function loadRooms() {
+            try {
+                const response = await fetch('http://localhost:3000/api/rooms');
+                const result = await response.json();
+                
+                const roomsList = document.getElementById('roomsList');
+                if (result.success && result.data.length > 0) {
+                    roomsList.innerHTML = '';
+                    result.data.slice(0, 4).forEach(room => {
+                        const roomCard = `
+                            <div class="room-card">
+                                <div class="room-image">
+                                    <img src="https://via.placeholder.com/300x200/4dabf7/fff?text=Phòng+Trọ" alt="${room.title}">
+                                    <span class="room-price">${room.price.toLocaleString()} đ/tháng</span>
+                                </div>
+                                <div class="room-info">
+                                    <h3>${room.title}</h3>
+                                    <p><i class="fas fa-map-marker-alt"></i> ${room.address}, ${room.district}</p>
+                                    <p><i class="fas fa-ruler-combined"></i> ${room.area} m²</p>
+                                    <p><i class="fas fa-user"></i> ${room.max_people} người</p>
+                                    <a href="room-detail.html?id=${room.id}" class="btn-view">Xem Chi Tiết</a>
+                                </div>
+                            </div>
+                        `;
+                        roomsList.innerHTML += roomCard;
+                    });
+                } else {
+                    roomsList.innerHTML = '<p>Chưa có phòng trọ nào.</p>';
+                }
+            } catch (error) {
+                console.error('Lỗi khi load phòng:', error);
+                document.getElementById('roomsList').innerHTML = '<p>Không thể tải danh sách phòng.</p>';
+            }
+        }
+
+        // Chạy khi trang load
+        document.addEventListener('DOMContentLoaded', () => {
+            checkLogin();
+            loadRooms();
+        });
+    </script>
+</body>
+</html>

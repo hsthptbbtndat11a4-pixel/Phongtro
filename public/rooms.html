@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tìm Phòng Trọ - PhongTro.VN</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <i class="fas fa-home"></i>
+                    <span>PhongTro.VN</span>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html"><i class="fas fa-home"></i> Trang Chủ</a>
+                    <a href="rooms.html" class="active"><i class="fas fa-search"></i> Tìm Phòng</a>
+                    <a href="post-room.html"><i class="fas fa-plus-circle"></i> Đăng Phòng</a>
+                    <a href="login.html" id="loginBtn"><i class="fas fa-user"></i> Đăng Nhập</a>
+                    <a href="register.html" id="registerBtn"><i class="fas fa-user-plus"></i> Đăng Ký</a>
+                </div>
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <span id="userName"></span>
+                    <button onclick="logout()" class="btn-logout">Đăng Xuất</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="rooms-page">
+            <h1 class="page-title">Tìm Phòng Trọ</h1>
+            
+            <!-- Bộ lọc -->
+            <div class="filter-section">
+                <div class="filter-grid">
+                    <div class="filter-group">
+                        <label for="city"><i class="fas fa-city"></i> Thành phố</label>
+                        <select id="city">
+                            <option value="">Tất cả</option>
+                            <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+                            <option value="Hà Nội">Hà Nội</option>
+                            <option value="Đà Nẵng">Đà Nẵng</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="district"><i class="fas fa-map-marker-alt"></i> Quận/Huyện</label>
+                        <select id="district">
+                            <option value="">Tất cả</option>
+                            <option value="Quận 1">Quận 1</option>
+                            <option value="Quận 3">Quận 3</option>
+                            <option value="Quận 7">Quận 7</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="minPrice"><i class="fas fa-money-bill-wave"></i> Giá từ</label>
+                        <input type="number" id="minPrice" placeholder="0 VNĐ">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="maxPrice"><i class="fas fa-money-bill-wave"></i> Giá đến</label>
+                        <input type="number" id="maxPrice" placeholder="10,000,000 VNĐ">
+                    </div>
+                    
+                    <button onclick="applyFilters()" class="btn-primary">Áp dụng</button>
+                </div>
+            </div>
+            
+            <!-- Danh sách phòng -->
+            <div class="rooms-container">
+                <div class="rooms-header">
+                    <h2 id="roomsCount">Đang tải...</h2>
+                    <select id="sortBy" onchange="loadRooms()">
+                        <option value="created_at">Mới nhất</option>
+                        <option value="price_asc">Giá thấp đến cao</option>
+                        <option value="price_desc">Giá cao đến thấp</option>
+                    </select>
+                </div>
+                
+                <div class="rooms-grid" id="roomsList">
+                    <!-- Phòng sẽ được load bằng JS -->
+                </div>
+                
+                <div class="loading" id="loading">Đang tải phòng trọ...</div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Biến lưu filter
+        let currentFilters = {};
+        
+        async function loadRooms() {
+            const loading = document.getElementById('loading');
+            loading.style.display = 'block';
+            
+            // Build query string
+            let query = '';
+            if (currentFilters.city) query += `&city=${currentFilters.city}`;
+            if (currentFilters.district) query += `&district=${currentFilters.district}`;
+            if (currentFilters.minPrice) query += `&minPrice=${currentFilters.minPrice}`;
+            if (currentFilters.maxPrice) query += `&maxPrice=${currentFilters.maxPrice}`;
+            
+            try {
+                const response = await fetch(`http://localhost:3000/api/rooms?${query}`);
+                const result = await response.json();
+                
+                const roomsList = document.getElementById('roomsList');
+                const roomsCount = document.getElementById('roomsCount');
+                
+                if (result.success && result.data.length > 0) {
+                    roomsCount.textContent = `Tìm thấy ${result.data.length} phòng`;
+                    roomsList.innerHTML = '';
+                    
+                    result.data.forEach(room => {
+                        const roomCard = `
+                            <div class="room-card">
+                                <div class="room-image">
+                                    <img src="https://via.placeholder.com/300x200/4dabf7/fff?text=${encodeURIComponent(room.title)}" alt="${room.title}">
+                                    <span class="room-price">${room.price.toLocaleString()} đ/tháng</span>
+                                </div>
+                                <div class="room-info">
+                                    <h3>${room.title}</h3>
+                                    <p><i class="fas fa-map-marker-alt"></i> ${room.address}, ${room.district || ''}</p>
+                                    <p><i class="fas fa-ruler-combined"></i> ${room.area || 'N/A'} m²</p>
+                                    <p><i class="fas fa-user"></i> ${room.max_people || 1} người</p>
+                                    <a href="room-detail.html?id=${room.id}" class="btn-view">Xem Chi Tiết</a>
+                                </div>
+                            </div>
+                        `;
+                        roomsList.innerHTML += roomCard;
+                    });
+                } else {
+                    roomsCount.textContent = 'Không tìm thấy phòng nào';
+                    roomsList.innerHTML = '<p class="no-results">Không có phòng trọ phù hợp với bộ lọc.</p>';
+                }
+            } catch (error) {
+                console.error('Lỗi khi load phòng:', error);
+                document.getElementById('roomsList').innerHTML = '<p class="error">Không thể tải danh sách phòng.</p>';
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+        
+        function applyFilters() {
+            currentFilters = {
+                city: document.getElementById('city').value,
+                district: document.getElementById('district').value,
+                minPrice: document.getElementById('minPrice').value,
+                maxPrice: document.getElementById('maxPrice').value
+            };
+            loadRooms();
+        }
+        
+        // Kiểm tra đăng nhập
+        function checkLogin() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user) {
+                document.getElementById('loginBtn').style.display = 'none';
+                document.getElementById('registerBtn').style.display = 'none';
+                document.getElementById('userInfo').style.display = 'flex';
+                document.getElementById('userName').textContent = user.username;
+            }
+        }
+        
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+        
+        // Chạy khi trang load
+        document.addEventListener('DOMContentLoaded', () => {
+            checkLogin();
+            loadRooms();
+        });
+    </script>
+    
+    <style>
+        .rooms-page {
+            padding: 40px 0;
+        }
+        
+        .page-title {
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+        
+        .filter-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            align-items: end;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .filter-group label {
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .filter-group select, .filter-group input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .rooms-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .rooms-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .rooms-header h2 {
+            color: #2c3e50;
+        }
+        
+        .rooms-header select {
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .no-results, .error {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            grid-column: 1 / -1;
+        }
+    </style>
+</body>
+</html>
