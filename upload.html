@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng tải phim - MovieFlix</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/upload.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="logo">MovieFlix</a>
+
+            <div class="search-box">
+                <input type="text" placeholder="Tìm kiếm phim...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+
+            <div class="nav-buttons">
+                <!-- Sẽ được cập nhật bởi auth.js -->
+            </div>
+
+            <div class="menu-icon">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+
+        <div class="menu">
+            <ul class="menu-list">
+                <li><a href="index.html">Trang chủ</a></li>
+                <li><a href="#">Phim Lẻ</a></li>
+                <li><a href="#">Phim Bộ</a></li>
+                <li><a href="#">Phim Chiếu Rạp</a></li>
+                <li><a href="#" class="active">Đăng tải phim</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Upload Section -->
+    <section class="upload-section container">
+        <h1 class="section-title">Đăng tải phim mới</h1>
+        
+        <form id="uploadForm" class="upload-form">
+            <div class="form-group">
+                <label for="movieTitle">Tên phim *</label>
+                <input type="text" id="movieTitle" required>
+            </div>
+
+            <div class="form-group">
+                <label for="movieDescription">Mô tả phim *</label>
+                <textarea id="movieDescription" rows="4" required></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="releaseYear">Năm phát hành *</label>
+                    <input type="number" id="releaseYear" min="1900" max="2025" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="duration">Thời lượng (VD: 2h 30m) *</label>
+                    <input type="text" id="duration" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="genres">Thể loại (phân cách bằng dấu phẩy) *</label>
+                <input type="text" id="genres" placeholder="Hành động, Phiêu lưu, ..." required>
+            </div>
+
+            <div class="form-group">
+                <label for="trailerUrl">Link Trailer (YouTube)</label>
+                <input type="url" id="trailerUrl" placeholder="https://www.youtube.com/watch?v=...">
+            </div>
+
+            <div class="form-group">
+                <label for="moviePoster">Poster phim *</label>
+                <input type="file" id="moviePoster" accept="image/*" required>
+                <div id="posterPreview" class="preview-container"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="movieFile">File phim *</label>
+                <input type="file" id="movieFile" accept="video/*" required>
+                <div id="videoPreview" class="preview-container"></div>
+            </div>
+
+            <button type="submit" class="btn upload-btn">
+                <i class="fas fa-cloud-upload-alt"></i> Đăng tải phim
+            </button>
+        </form>
+    </section>
+
+    <!-- My Uploads Section -->
+    <section class="my-uploads container">
+        <h2 class="section-title">Phim đã đăng tải</h2>
+        <div class="movie-grid" id="myUploadsGrid">
+            <!-- Phim đã đăng tải sẽ hiện ở đây -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>MovieFlix</h3>
+                    <p>Xem phim chất lượng cao</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 MovieFlix. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login/Register Modals -->
+    <div class="modal" id="loginModal">
+        <!-- ... (copy từ index.html) ... -->
+    </div>
+    <div class="modal" id="registerModal">
+        <!-- ... (copy từ index.html) ... -->
+    </div>
+
+    <!-- Custom JS -->
+    <script src="assets/js/movies.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/upload.js"></script>
+</body>
+</html>

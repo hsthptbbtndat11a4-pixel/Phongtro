@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MovieFlix - Xem Phim Chất Lượng Cao</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="logo">
+                Movie-NgocDat-AnhVy
+            </a>
+
+            <div class="search-box">
+                <input type="text" placeholder="Tìm kiếm phim...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn login-btn">Đăng nhập</button>
+                <button class="btn register-btn">Đăng ký</button>
+            </div>
+
+            <div class="menu-icon">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+
+        <!-- Menu -->
+        <div class="menu">
+            <ul class="menu-list">
+                <li><a href="#" class="active">Trang chủ</a></li>
+                <li><a href="#">Phim Lẻ</a></li>
+                <li><a href="#">Phim Bộ</a></li>
+                <li><a href="#">Phim Chiếu Rạp</a></li>
+                <li><a href="upload.html">Đăng tải phim</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="swiper hero-slider">
+            <div class="swiper-wrapper">
+                <!-- Slides sẽ được thêm bằng JavaScript -->
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </section>
+
+    <!-- Movies Section -->
+    <section class="movies container">
+        <h2 class="section-title">Phim Đề Xuất</h2>
+        <div class="movie-grid">
+            <!-- Movie cards sẽ được thêm bằng JavaScript -->
+        </div>
+    </section>
+
+    <section class="movies container">
+        <h2 class="section-title">Phim Mới Cập Nhật</h2>
+        <div class="movie-grid">
+            <!-- Movie cards sẽ được thêm bằng JavaScript -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>MovieFlix</h3>
+                    <p>Xem phim chất lượng cao</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Liên Kết</h3>
+                    <ul>
+                        <li><a href="#">Phim Lẻ</a></li>
+                        <li><a href="#">Phim Bộ</a></li>
+                        <li><a href="#">Phim Chiếu Rạp</a></li>
+                        <li><a href="#">Phim Mới</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Thông Tin</h3>
+                    <ul>
+                        <li><a href="#">Giới Thiệu</a></li>
+                        <li><a href="#">Liên Hệ</a></li>
+                        <li><a href="#">Điều Khoản Sử Dụng</a></li>
+                        <li><a href="#">Chính Sách Bảo Mật</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 MovieFlix. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Đăng Nhập</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Mật khẩu</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn">Đăng Nhập</button>
+            </form>
+            <p>Chưa có tài khoản? <a href="#" class="switch-form" data-form="register">Đăng ký ngay</a></p>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Đăng Ký</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Họ tên</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Mật khẩu</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Xác nhận mật khẩu</label>
+                    <input type="password" id="confirmPassword" required>
+                </div>
+                <button type="submit" class="btn">Đăng Ký</button>
+            </form>
+            <p>Đã có tài khoản? <a href="#" class="switch-form" data-form="login">Đăng nhập</a></p>
+        </div>
+    </div>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="assets/js/movies.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
